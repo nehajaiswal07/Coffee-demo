@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mochar‑Style Café Experience</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background:
+                radial-gradient(1200px 600px at 20% 10%, #f5e6d3 0%, transparent 60%),
+                radial-gradient(1000px 500px at 80% 30%, #e6c7a3 0%, transparent 55%),
+                linear-gradient(180deg, #f7efe4 0%, #e3c3a0 40%, #7a4a2e 100%);
+            color: #3b2416;
+            overflow-x: hidden;
+        }
+
+        section {
+            min-height: 100vh;
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .hero-cup {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%) scale(1);
+            width: 360px;
+            transition: transform 0.2s ease-out;
+            pointer-events: none;
+            filter: drop-shadow(0 40px 60px rgba(0, 0, 0, .7));
+        }
+
+        /* ===== HERO SPLIT ===== */
+        .hero-left h1 {
+            font-size: clamp(67px, 8vw, 130px);
+            font-weight: 800;
+            line-height: 1.05;
+        }
+
+        .hero-left p {
+            font-size: 20px;
+            max-width: 420px;
+        }
+
+        .hero-split {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8vw;
+            overflow: hidden;
+        }
+
+        .hero-left {
+            max-width: 480px;
+            transform: translateX(-120%);
+            opacity: 0;
+            animation: slideLeft 1.2s ease-out forwards;
+        }
+
+        .hero-right {
+            max-width: 520px;
+            transform: translateX(120%);
+            opacity: 0;
+            animation: slideRight 1.2s ease-out forwards;
+        }
+
+        .hero-right img {
+            width: 600px;
+            filter: drop-shadow(0 40px 60px rgba(0, 0, 0, .4));
+            transition: transform 0.6s ease;
+            transform-style: preserve-3d;
+        }
+
+        .hero-right img:hover {
+            transform: perspective(900px) rotateX(8deg) rotateY(-7deg) translateY(-12px) scale(1.06);
+        }
+
+        @keyframes slideLeft {
+            to {
+                transform: none;
+                opacity: 1
+            }
+        }
+
+        @keyframes slideRight {
+            to {
+                transform: none;
+                opacity: 1
+            }
+        }
+
+        /* ===== FALLING BEANS ===== */
+        .beans {
+            position: absolute;
+            inset: 0;
+            pointer-events: none
+        }
+
+        .bean {
+            position: absolute;
+            top: -10%;
+            width: 19px;
+            height: 27px;
+            background: linear-gradient(135deg, #8b5a2b, #3b2416);
+            border-radius: 50%;
+            animation: fall linear infinite;
+        }
+
+        .bean::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 4px;
+            bottom: 4px;
+            width: 2px;
+            background: rgba(0, 0, 0, .35);
+            transform: translateX(-50%)
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(120vh) rotate(360deg)
+            }
+        }
+
+        /* ===== STICKY CUP ===== */
+        .cup-wrap {
+            position: sticky;
+            top: 30%;
+            width: 200px;
+            margin: auto;
+        }
+
+        .cup {
+            width: 160px;
+            height: 110px;
+            background: linear-gradient(#fff, #ddd);
+            border-radius: 0 0 30px 30px;
+            margin: auto;
+            position: relative
+        }
+
+        .cup::after {
+            content: '';
+            position: absolute;
+            right: -30px;
+            top: 30px;
+            width: 35px;
+            height: 45px;
+            border: 6px solid #eee;
+            border-left: none;
+            border-radius: 0 25px 25px 0
+        }
+
+        .coffee {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            height: 26px;
+            background: linear-gradient(#6f4e37, #3b2416);
+            border-radius: 50%
+        }
+
+        .plate {
+            width: 200px;
+            height: 22px;
+            background: #ccc;
+            border-radius: 50%;
+            margin: 14px auto 0
+        }
+
+        /* ===== FLASH CARDS ===== */
+        .flash {
+            background: linear-gradient(135deg, rgba(255, 255, 255, .14), rgba(255, 255, 255, .03));
+            border-radius: 30px;
+            padding: 70px;
+            transform: rotateX(15deg) scale(.9);
+            opacity: 0;
+            transition: 1s
+        }
+
+        .flash.show {
+            transform: none;
+            opacity: 1
+        }
+
+        /* ===== IMAGE PARALLAX ===== */
+        .parallax img {
+            width: 100%;
+            border-radius: 32px;
+            transform: translateY(60px) scale(.95);
+            opacity: 0;
+            transition: 1s
+        }
+
+        .parallax.show img {
+            transform: none;
+            opacity: 1
+        }
+
+        /* ===== HOVER GLOW EDGE ===== */
+        .glow-wrap {
+            position: relative;
+            border-radius: 32px;
+            overflow: hidden;
+        }
+
+        .glow-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(120deg, #ffb347, #ff5f6d, #8e2de2);
+            opacity: 0;
+            filter: blur(20px);
+            transition: .5s
+        }
+
+        .glow-wrap:hover::before {
+            opacity: 1
+        }
+
+        .glow-wrap img {
+            position: relative;
+            z-index: 2
+        }
+
+        /* ===== OVERLAP STORY ===== */
+        .story {
+            position: relative
+        }
+
+        .story-img {
+            position: relative;
+            margin-top: -140px;
+            transform: scale(.9);
+            opacity: 0;
+            transition: 1s
+        }
+
+        .story-img.show {
+            margin-top: 0;
+            transform: none;
+            opacity: 1
+        }
+
+        @media(max-width:768px) {
+
+            .bean,
+            .cup-wrap {
+                display: none
+            }
+
+            section {
+                padding: 80px 20px
+            }
+        }
+
+        /* ===== IMAGE CARD SLIDER ===== */
+        .image-cards {
+            background: linear-gradient(180deg, #f3e8d7, #e4c8a3);
+            padding: 120px 0;
+            overflow: hidden;
+        }
+
+        .image-cards h2 {
+            color: #3b2416;
+            font-weight: 800;
+            font-size: clamp(36px, 5vw, 64px);
+        }
+
+        .card-track {
+            display: flex;
+            gap: 40px;
+            transform: translateX(100%);
+            animation: slideCards 18s linear infinite;
+        }
+
+        .img-card-slide {
+            min-width: 320px;
+            height: 420px;
+            background: #fff;
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, .25);
+            overflow: hidden;
+            transform: rotateY(-8deg);
+        }
+
+        .img-card-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes slideCards {
+            to {
+                transform: translateX(-120%);
+            }
+        }
+
+        /* Mobile safety */
+        @media(max-width:768px) {
+            .img-card-slide {
+                min-width: 260px;
+                height: 340px;
+            }
+        }
+        
+        /* ===== SECTION TITLE ===== */
+.section-title-area {
+  text-align: center;
+  margin-bottom: 60px;
+}
+.section-subtitle-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.subtitle-icon-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.subtitle-icon-box img {
+  width: 32px;
+  height: 32px;
+  transition: transform 0.6s ease;
+}
+.subtitle-icon-box img:hover {
+  transform: rotate(20deg) scale(1.1);
+}
+.subtitle-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #8b5a2b;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+.section-title {
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 800;
+  color: #3b2416;
+}
+
+/* ===== CARDS WRAPPER ===== */
+.food-type-card-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  perspective: 1200px;
+}
+
+/* ===== SINGLE HORIZONTAL CARD ===== */
+.single-food-card {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 32px;
+  padding: 20px 30px;
+  max-width: 600px;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(30px);
+}
+.single-food-card.show {
+  opacity: 1;
+  transform: translateY(0);
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+.single-food-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 40px 60px rgba(0,0,0,0.25);
+}
+
+/* ===== ICON ===== */
+.food-card-icon {
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+  transition: transform 0.4s ease;
+}
+.single-food-card:hover .food-card-icon {
+  transform: rotate(-10deg) scale(1.1);
+}
+
+/* ===== TEXT CONTENT ===== */
+.food-card-title-text {
+  flex: 1;
+}
+.food-card-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #3b2416;
+  margin-bottom: 10px;
+}
+.food-card-text {
+  font-size: 16px;
+  color: #5b3a2b;
+  line-height: 1.5;
+}
+
+/* ===== BORDER ACCENT ===== */
+.food-card-border-shape {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 4px;
+  border-radius: 2px;
+  border: 2px solid rgba(174,146,115,0.2);
+  background: linear-gradient(90deg, #ffb347, #ff5f6d);
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:992px){
+  .single-food-card {
+    max-width: 100%;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: auto;
+  }
+  .food-card-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 15px;
+  }
+}
+
+/* ===== CONTAINER ===== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 20px;
+}
+
+/* ===== ROW ===== */
+.coffee-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* ===== TEXT ===== */
+.coffee-text {
+  flex: 1;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease-out;
+}
+
+.coffee-text h2 {
+  font-size: clamp(32px, 5vw, 50px);
+  color: #3b2416;
+  margin-bottom: 20px;
+  font-weight: 800;
+}
+
+.coffee-text p {
+  font-size: 18px;
+  color: #5b3a2b;
+  line-height: 1.6;
+}
+
+/* ===== IMAGE ===== */
+.coffee-image {
+  flex: 1;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease-out;
+}
+
+.coffee-image img {
+  width: 100%;
+  border-radius: 32px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+  transition: transform 0.5s ease;
+}
+
+.coffee-image img:hover {
+  transform: scale(1.05);
+}
+
+/* ===== SHOW CLASS FOR SCROLL REVEAL ===== */
+.reveal.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width: 992px) {
+  .coffee-row {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+  .coffee-text, .coffee-image {
+    transform: translateY(30px);
+  }
+}
+
+
+
+
+/* ===== FOOTER BASE ===== */
+.coffee-footer {
+  position: relative;
+  background: linear-gradient(180deg, #3b2416, #1f120a);
+  color: #f5e6d3;
+  padding-top: 140px;
+  overflow: hidden;
+}
+
+/* 3D DEPTH LAYER */
+.footer-3d-layer {
+  position: absolute;
+  inset: -40%;
+  background:
+    radial-gradient(600px 300px at 20% 0%, rgba(255,180,100,0.18), transparent 60%),
+    radial-gradient(500px 300px at 80% 20%, rgba(180,120,80,0.15), transparent 60%);
+  transform: translateZ(-80px);
+  pointer-events: none;
+}
+
+/* INNER GRID */
+.footer-inner {
+  position: relative;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 40px 80px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 60px;
+  transform-style: preserve-3d;
+}
+
+/* BRAND */
+.footer-brand h3 {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 14px;
+  color: #ffddb8;
+}
+
+.footer-brand p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #d9bfa3;
+}
+
+/* LINKS */
+.footer-links h4,
+.footer-newsletter h4 {
+  font-size: 18px;
+  margin-bottom: 18px;
+  color: #ffddb8;
+}
+
+.footer-links a {
+  display: block;
+  color: #d9bfa3;
+  text-decoration: none;
+  margin-bottom: 12px;
+  transition: transform 0.4s ease, color 0.4s ease;
+}
+
+.footer-links a:hover {
+  color: #fff;
+  transform: translateX(8px);
+}
+
+/* NEWSLETTER */
+.footer-newsletter input {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: none;
+  margin-bottom: 14px;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+.footer-newsletter input::placeholder {
+  color: #d9bfa3;
+}
+
+.footer-newsletter button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #ffb347, #ff7a18);
+  color: #3b2416;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.footer-newsletter button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(255,140,50,0.5);
+}
+
+/* 3D HOVER EFFECT ON FOOTER */
+.coffee-footer:hover .footer-inner {
+  transform: perspective(1000px) rotateX(2deg);
+  transition: transform 0.8s ease;
+}
+
+/* BOTTOM */
+.footer-bottom {
+  text-align: center;
+  padding: 30px 20px;
+  font-size: 14px;
+  color: #b89b82;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* RESPONSIVE */
+@media(max-width: 992px) {
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media(max-width: 600px) {
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .footer-links a:hover {
+    transform: none;
+  }
+}
+
+
+/* ===== HERO SECTION ===== */
+.coffee-hero {
+  background: linear-gradient(135deg, #f7efe4, #e6c7a3);
+  padding: 140px 20px;
+  overflow: hidden;
+}
+
+/* INNER WRAPPER */
+.coffee-hero-inner {
+  max-width: 1200px;
+  margin: auto;
+  background: #fff;
+  border-radius: 40px;
+  padding: 80px;
+  display: flex;
+  align-items: center;
+  gap: 80px;
+
+  box-shadow: 0 40px 80px rgba(0,0,0,0.25);
+  transform-style: preserve-3d;
+}
+
+/* LEFT TEXT */
+.coffee-hero-text {
+  flex: 1;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: rgba(59,36,22,0.1);
+  color: #3b2416;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.coffee-hero-text h2 {
+  font-size: clamp(36px, 5vw, 58px);
+  font-weight: 800;
+  color: #3b2416;
+  margin-bottom: 20px;
+  line-height: 1.1;
+}
+
+.coffee-hero-text p {
+  font-size: 18px;
+  color: #5b3a2b;
+  max-width: 420px;
+  margin-bottom: 30px;
+}
+
+/* BUTTONS */
+.hero-buttons {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.btn-primary {
+  background: #3b2416;
+  color: #fff;
+  padding: 14px 26px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.4s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-4px);
+}
+
+.btn-outline {
+  border: 2px solid #3b2416;
+  color: #3b2416;
+  padding: 14px 26px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* FEATURES */
+.hero-features {
+  display: flex;
+  gap: 24px;
+  font-size: 14px;
+  color: #5b3a2b;
+}
+
+/* RIGHT IMAGE */
+.coffee-hero-image {
+  flex: 1;
+  transform: perspective(900px) rotateY(-8deg);
+  transition: transform 0.8s ease;
+}
+
+.coffee-hero-image img {
+  width: 100%;
+  border-radius: 30px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+}
+
+.coffee-hero-inner:hover .coffee-hero-image {
+  transform: perspective(900px) rotateY(0deg) translateY(-8px);
+}
+
+/* ===== SCROLL FADE FROM TOP ===== */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(-80px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.reveal-up.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* RESPONSIVE */
+@media(max-width: 900px) {
+  .coffee-hero-inner {
+    flex-direction: column;
+    padding: 50px 30px;
+    text-align: center;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+
+  .hero-features {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .coffee-hero-image {
+    transform: none;
+  }
+}
+
+ 
+
+  
+    </style>
+</head>
+
+<body>
+
+    <!-- FALLING BEANS -->
+    <div class="beans">
+        <div class="bean" style="left:5%;animation-duration:5s"></div>
+
+        <div class="bean" style="left:15%;animation-duration:8s"></div>
+        <div class="bean" style="left:75%;animation-duration:13s"></div>
+        <div class="bean" style="left:35%;animation-duration:10s"></div>
+        <div class="bean" style="left:55%;animation-duration:7s"></div>
+        <div class="bean" style="left:55%;animation-duration:11s"></div>
+
+        <div class="bean" style="left:95%;animation-duration:14s"></div>
+    </div>
+
+
+    <!-- HERO -->
+    <section class="hero-split">
+        <div class="hero-left">
+            <h1>Crafted Coffee</h1>
+            <p>An immersive café experience inspired by modern motion-first design.</p>
+        </div>
+        <div class="hero-right">
+            <img src="16" alt="Coffee Cup Beans">
+        </div>
+    </section>
+
+  
+
+    <!-- ABOUT -->
+    
+<section class="food-type">
+  <div class="section-title-area">
+    <div class="section-subtitle-box">
+      <div class="subtitle-icon-box">
+        <img src="https://cdn.prod.website-files.com/68b3c9fd2cbb0d5700951a95/68b908fc6fcdb81244506866_Group.png" alt="Icon">
+        <img src="https://cdn.prod.website-files.com/68b3c9fd2cbb0d5700951a95/68b9094e295fd2d422199046_Vector.png" alt="Icon">
+      </div>
+      <div class="subtitle-text">available foods</div>
+    </div>
+    <h2 class="section-title">Type of Coffee’s</h2>
+  </div>
+
+  <div class="food-type-card-wrapper">
+    <a href="#" class="single-food-card">
+      <img src="https://cdn.prod.website-files.com/68b3c9fd2cbb0d5700951a95/68b925cff521d45b4053d933_031-coffee%20beans.svg" alt="Coffee" class="food-card-icon">
+      <div class="food-card-title-text">
+        <h3 class="food-card-title">Arabica Green</h3>
+        <p class="food-card-text">Welcome to our warm café retreat, where each brew is made with love.</p>
+      </div>
+      <div class="food-card-border-shape"></div>
+    </a>
+
+    <a href="#" class="single-food-card">
+      <img src="https://cdn.prod.website-files.com/68b3c9fd2cbb0d5700951a95/68b94851b1286cf1c4a7b146_033-coffee.svg" alt="Coffee" class="food-card-icon">
+      <div class="food-card-title-text">
+        <h3 class="food-card-title">Ice Cream & Sweets</h3>
+        <p class="food-card-text">Step into our cozy coffee haven, where every cup is crafted with care.</p>
+      </div>
+      <div class="food-card-border-shape"></div>
+    </a>
+
+    <a href="#" class="single-food-card">
+      <img src="https://cdn.prod.website-files.com/68b3c9fd2cbb0d5700951a95/68b9481d46bf6f20096e0afb_004-sandwich.svg" alt="Coffee" class="food-card-icon">
+      <div class="food-card-title-text">
+        <h3 class="food-card-title">Bakery Items</h3>
+        <p class="food-card-text">Enter our inviting coffee corner, where every sip is poured with passion.</p>
+      </div>
+      <div class="food-card-border-shape"></div>
+    </a>
+  </div>
+</section>
+
+    <!-- IMAGE STORY SECTION -->
+   <section class="container">
+  <div class="container">
+    <div class="coffee-row">
+      <!-- LEFT TEXT -->
+      <div class="coffee-text reveal">
+        <h2>We Made Organic, Tasteful, and Delicious Coffee</h2>
+        <p>Experience every sip of coffee crafted to perfection. From rich aromas to bold flavors and smooth textures, redefine your lifestyle with the warmth of our fresh brews. Let your coffee do the awakening.</p>
+      </div>
+      <!-- RIGHT IMAGE -->
+      <div class="coffee-image reveal">
+        <img src="11" alt="Coffee Experience">
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- IMAGE CARD SLIDER SECTION -->
+    <section class="image-cards">
+        <h2 class="text-center mb-5">Our Coffee Moments</h2>
+        <div class="card-track">
+            <div class="img-card-slide"><img src="2.png" alt="Coffee 1"></div>
+            <div class="img-card-slide"><img src="9" alt="Coffee 2"></div>
+            <div class="img-card-slide"><img src="11" alt="Coffee 3"></div>
+            <div class="img-card-slide"><img src="10.jpeg" alt="Coffee 3"></div>
+            <div class="img-card-slide"><img src="8.jpeg" alt="Coffee 3"></div>
+            <div class="img-card-slide"><img src="https://images.unsplash.com/photo-1511920170033-f8396924c348"
+                    alt="Coffee 4"></div>
+            <div class="img-card-slide"><img src="12.jpeg" alt="Coffee 3"></div>
+            <div class="img-card-slide"><img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93"
+                    alt="Coffee 5"></div>
+        </div>
+    </section>
+   
+
+<section class="coffee-hero reveal-up">
+  <div class="coffee-hero-inner">
+
+    <!-- LEFT CONTENT -->
+    <div class="coffee-hero-text">
+      <span class="hero-badge">☕ Premium Coffee</span>
+      <h2>The best coffee bean for every cup of your coffee</h2>
+      <p>
+        Experience unparalleled aroma and taste.
+        Handpicked for coffee connoisseurs like you.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#" class="btn-primary">Explore Coffee</a>
+        <a href="#" class="btn-outline">Our Process</a>
+      </div>
+
+      <div class="hero-features">
+        <div>🌱 Quality Beans</div>
+        <div>🔥 Fresh Roast</div>
+        <div>🤎 Loved Worldwide</div>
+      </div>
+    </div>
+
+    <!-- RIGHT IMAGE -->
+    <div class="coffee-hero-image">
+      <img src="17.jpg!bw700" alt="Coffee Cup">
+    </div>
+
+  </div>
+</section>
+
+    <footer class="coffee-footer">
+  <div class="footer-3d-layer"></div>
+
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h3>Mochar Café</h3>
+      <p>Crafted coffee experiences, brewed with passion and warmth.</p>
+    </div>
+
+    <div class="footer-links">
+      <h4>Explore</h4>
+      <a href="#">Home</a>
+      <a href="#">Menu</a>
+      <a href="#">Our Story</a>
+      <a href="#">Contact</a>
+    </div>
+
+    <div class="footer-links">
+      <h4>Connect</h4>
+      <a href="#">Instagram</a>
+      <a href="#">Facebook</a>
+      <a href="#">Twitter</a>
+      <a href="#">LinkedIn</a>
+    </div>
+
+    <div class="footer-newsletter">
+      <h4>Stay Updated</h4>
+      <input type="email" placeholder="Your email">
+      <button>Subscribe</button>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    © 2025 Mochar Café. All rights reserved.
+  </div>
+</footer>
+
+    <!-- JS -->
+    <script>
+        const reveals = document.querySelectorAll('.flash,.parallax,.story-img'); ('.flash,.parallax');
+        window.addEventListener('scroll', () => {
+            reveals.forEach(el => {
+                if (el.getBoundingClientRect().top < window.innerHeight * .8) {
+                    el.classList.add('show')
+                }
+            })
+        })
+
+        const cards = document.querySelectorAll('.single-food-card');
+window.addEventListener('scroll', () => {
+  cards.forEach(card => {
+    const top = card.getBoundingClientRect().top;
+    const windowHeight = window.innerHeight;
+    if (top < windowHeight * 0.85) {
+      card.classList.add('show');
+    }
+  });
+});
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const reveals = document.querySelectorAll('.reveal');
+
+  window.addEventListener('scroll', () => {
+    reveals.forEach(el => {
+      if (!el) return; // safety check
+      const top = el.getBoundingClientRect().top;
+      const windowHeight = window.innerHeight;
+      if (top < windowHeight * 0.85) {
+        el.classList.add('show');
+      }
+    });
+  });
+
+  // Trigger scroll event once in case elements are already in view
+  window.dispatchEvent(new Event('scroll'));
+});
+
+
+document.addEventListener('scroll', () => {
+  document.querySelectorAll('.reveal-up').forEach(el => {
+    const top = el.getBoundingClientRect().top;
+    if (top < window.innerHeight * 0.8) {
+      el.classList.add('show');
+    }
+  });
+});
+
+
+
+    </script>
+
+
+
+
+</body>
+
+</html>
